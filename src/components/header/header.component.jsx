@@ -1,5 +1,6 @@
 import React from "react";
 import "./header.styles.scss";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
 import { ReactComponent as Logo } from "../../assets/demo.svg";
@@ -17,14 +18,28 @@ const Header = ({ currentUser }) => {
         <Link className="option" to="/contact">
           CONTACT
         </Link>
-        {
-          currentUser ?
-          <div className="option" onClick={() => auth.signOut()}>SIGN OUT</div>
-          :<Link className="option" to="/signin">SIGN IN</Link>
-        }
+        {currentUser ? (
+          <div className="option" onClick={() => auth.signOut()}>
+            SIGN OUT
+          </div>
+        ) : (
+          <Link className="option" to="/signin">
+            SIGN IN
+          </Link>
+        )}
       </div>
     </div>
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => ({
+  // state is top level rootReducer
+  currentUser: state.user.currentUser,
+  //we want to current user inside of root reducer and we access to user reducer inside root reducer
+  //After accessing user reducer we are able to use currentUser value
+});
+
+export default connect(mapStateToProps)(Header);
+// connect is a HOC
+// we got the current user with MapStateToProps function
+// And we pass it Header component as a state
