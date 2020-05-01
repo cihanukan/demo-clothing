@@ -8,6 +8,11 @@ export const selectCartItems = createSelector(
   (cart) => cart.cartItems
 );
 
+export const selectCartHidden = createSelector(
+  [selectCart],
+  (cart) => cart.hidden
+);
+
 //get the cartItems and calculate quantity. We have memoized count and cartItems array.
 //There is no need to calculate every irrelevant state call such as currentUser.
 //Otherwise every call on mapStateToProps would cause to recalculate quantity even there wasn't any changes on it.
@@ -16,3 +21,9 @@ export const selectCartItemsCount = createSelector(
   (cartItems) =>
     cartItems.reduce((accumulator, item) => accumulator + item.quantity, 0)
 );
+
+export const selectCartTotals = createSelector(
+  [selectCartItems],
+  (cartItems) =>
+    cartItems.reduce((accumulator, item) => accumulator + item.quantity * item.price, 0)
+)

@@ -3,9 +3,13 @@ import "./header.styles.scss";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
+// import { createStructuredSelector } from "reselect";
 import CartIcon from "../cart-icon/cart-icon.component";
+import { selectCartHidden } from "../../redux/cart/cart.selectors";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import { ReactComponent as Logo } from "../../assets/demo.svg";
+
 
 const Header = ({ currentUser, hidden }) => {
   return (
@@ -36,10 +40,16 @@ const Header = ({ currentUser, hidden }) => {
   );
 };
 
-const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+//****Same as below code*****
+// const mapStateToProps = createStructuredSelector({
+//   currentUser: selectCurrentUser,
+//   hidden: selectCartHidden,
+// });
+
+const mapStateToProps = (state) => ({
   // state is top level rootReducer
-  currentUser,
-  hidden,
+  currentUser: selectCurrentUser(state),
+  hidden: selectCartHidden(state),
   //we want to current user inside of root reducer and we access to user reducer inside root reducer
   //After accessing user reducer we are able to use currentUser value
 });

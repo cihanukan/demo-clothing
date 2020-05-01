@@ -16,6 +16,11 @@
       display: flex;
       flex-direction: column;
       overflow: scroll;
+
+      .empty-message{
+        font-size: 18px;
+        margin: 100px auto;
+      }
     }
   
     button {
@@ -24,3 +29,21 @@
 
   }
   
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  /* Handle on hover */
+    &:hover{
+      background: #555; 
+    }
+  }
