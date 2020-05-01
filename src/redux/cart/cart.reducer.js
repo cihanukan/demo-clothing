@@ -1,5 +1,5 @@
 import { cartActionTypes } from "./cart.types";
-import { addItemToCart } from "./cart.util";
+import { addItemToCart, removeItemFromCart } from "./cart.util";
 
 const INITIAL_STATE = {
   hidden: true,
@@ -16,7 +16,19 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     case cartActionTypes.ADD_ITEM:
       return {
         ...state,
-        cartItems: addItemToCart(state.cartItems, action.payload)
+        cartItems: addItemToCart(state.cartItems, action.payload),
+      };
+    case cartActionTypes.REMOVE_ITEM:
+      return{
+        ...state,
+        cartItems: removeItemFromCart(state.cartItems, action.payload)
+      }
+    case cartActionTypes.CLEAR_ITEM_FROM_CART:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(
+          (cartItem) => cartItem.id !== action.payload.id
+        ),
       };
     default:
       return state;
@@ -28,6 +40,5 @@ const cartReducer = (state = INITIAL_STATE, action) => {
 //Bu satır ile cart.util içindeki functiona cartItems array'i ve
 //collection-item componentinde yer alan onClick eventine gelen item'ı ( bizim için bir payload)
 // gönderdik
-
 
 export default cartReducer;

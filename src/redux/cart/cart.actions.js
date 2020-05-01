@@ -10,3 +10,14 @@ export const addItem = (item) =>({ // item bizim için her bir shop item (sapka 
   type: cartActionTypes.ADD_ITEM,
   payload : item // payload her tıklanan elementin kendisi
 })
+
+export const clearItemFromCart = (item) =>({
+  type: cartActionTypes.CLEAR_ITEM_FROM_CART,
+  payload: item
+})
+
+
+export const removeItem = (item) =>({
+  type: cartActionTypes.REMOVE_ITEM,
+  payload: item
+})
