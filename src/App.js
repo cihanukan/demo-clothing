@@ -46,8 +46,6 @@ class App extends React.Component {
 
   render() {
     return (
-      //we passed current user state to the Header component via Redux reducer.
-      //So we do not need to app component to pass it anymore
       <div>
         <Header />
         <Switch>
