@@ -12,7 +12,6 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 
-
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
@@ -32,9 +31,8 @@ class App extends React.Component {
             ...snapShot.data(), // to get data from firestore such us displayName, email, createdAt
           });
         });
-      } else {
-        setCurrentUser(userAuth); // if not authorized then currentUser will be null
       }
+      setCurrentUser(userAuth); // if not authorized then currentUser will be null
     });
   }
 
@@ -73,8 +71,6 @@ class App extends React.Component {
 // const mapStateToProps = (state = {
 //   currentUser: selectCurrentUser(state),
 // });
-
-
 
 //Using createStructuredSelector
 const mapStateToProps = createStructuredSelector({

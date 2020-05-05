@@ -45,6 +45,44 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+//Adding Collections adn documents to firestore
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  //creating collection
+  const collectionRef = firestore.collection(collectionKey);
+
+  //Batching data -- If we face with and data corruption(it may be internet connection issue.)
+  //Used for performing multiple writes as a single atomic operation.
+  const batch = firestore.batch();
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = (collectionSnapshot) => {
+  const transformedCollection = collectionSnapshot.docs.map((docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()), // convert data to format whixh is understandable for all browser
+      id: docSnapshot.id,
+      title,
+      items,
+    };
+  });
+
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+};
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
