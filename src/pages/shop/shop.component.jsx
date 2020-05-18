@@ -8,27 +8,49 @@ import {
   convertCollectionsSnapshotToMap,
 } from "../../firebase/firebase.utils";
 import { updateCollections } from "../../redux/shop/shop.actions";
+import WithSpinner from "../../components/with-spinner/with-spinner.component";
+
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 class ShopPage extends React.Component {
+  state = {
+    loading: true,
+  };
+
   unSubcribeFromSnapshot = null;
   componentDidMount() {
-    const {updateCollections} = this.props;
+    const { updateCollections } = this.props;
     const collectionRef = firestore.collection("collections");
 
     this.unSubcribeFromSnapshot = collectionRef.onSnapshot(async (snapshot) => {
       const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-      updateCollections(collectionsMap)
+      updateCollections(collectionsMap);
+      
+      //We have received data from firestore so "loading" state needs to false now.
+      //After setting false spinner effect will be disappeared.
+      this.setState({ loading: false });
     });
   }
 
   render() {
     const { match } = this.props;
+    const { loading } = this.state;
     return (
       <div className="shop-page">
-        <Route exact path={`${match.path}`} component={CollectionsOverview} />
+        <Route
+          exact
+          path={`${match.path}`}
+          render={(props) => (
+            <CollectionsOverviewWithSpinner isLoading={loading} {...props} />
+          )}
+        />
         <Route
           path={`${match.path}/:collectionId`}
-          component={CollectionPage}
+          render={(props) => (
+            <CollectionPageWithSpinner isLoading={loading} {...props} />
+          )}
         />
       </div>
     );
